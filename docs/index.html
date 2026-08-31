@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -69,22 +69,22 @@
     <header><div class="brand"><span></span>CounterSignal</div><div class="mode" id="mode">Deterministic evidence mode · no call</div></header>
     <section class="hero">
       <div><h1>Try to kill the hypothesis.</h1><p class="lede">Customer discovery that can scale confirmation bias is worse than no research. Freeze the segment, questions, and decision rule first—then let contradictions count.</p></div>
-      <aside class="stamp"><small>Pre-registered experiment</small><strong>Protocol frozen</strong></aside>
+      <aside class="stamp" aria-label="Protocol status"><small>Pre-registered experiment</small><strong>Protocol frozen</strong></aside>
     </section>
     <section class="grid">
       <article class="card">
-        <div class="label">Frozen hypothesis</div><h2 id="experiment-id"></h2><div class="hypothesis" id="hypothesis"></div><span class="segment" id="segment"></span>
+        <div class="label">Frozen hypothesis</div><h2 id="experiment-id">Loading experiment…</h2><div class="hypothesis" id="hypothesis"></div><span class="segment" id="segment"></span>
         <ol id="questions"></ol>
       </article>
-      <aside>
+      <aside aria-label="Experiment controls">
         <div class="rule-strip"><div class="rule"><strong>8</strong><span>completed</span></div><div class="rule"><strong>5</strong><span>support</span></div><div class="rule"><strong>3</strong><span>contradict</span></div></div>
         <div class="decision"><div class="label">Current decision</div><strong id="decision">collecting</strong></div>
         <div class="card controls">
           <div class="label">Evidence routes</div><h2>Run one bounded outcome</h2>
           <div class="actions">
-            <button data-scenario="confirmation">Confirmation</button><button data-scenario="contradiction">Contradiction</button>
-            <button data-scenario="ambiguous">Ambiguous</button><button data-scenario="voicemail">Voicemail</button>
-            <button class="primary" id="preview">Inspect frozen CALL‑E task</button>
+            <button type="button" data-scenario="confirmation">Confirmation</button><button type="button" data-scenario="contradiction">Contradiction</button>
+            <button type="button" data-scenario="ambiguous">Ambiguous</button><button type="button" data-scenario="voicemail">Voicemail</button>
+            <button type="button" class="primary" id="preview">Inspect frozen CALL‑E task</button>
           </div>
         </div>
       </aside>
@@ -99,7 +99,7 @@
       <p class="footnote">CounterSignal returns an operational experiment decision. It does not estimate a population or certify product-market fit.</p>
     </section>
   </main>
-  <dialog id="details"><button class="close" id="close">Close</button><div class="label">Inspectable output</div><pre id="json"></pre></dialog>
+  <dialog id="details"><button type="button" class="close" id="close">Close</button><div class="label">Inspectable output</div><pre id="json"></pre></dialog>
   <script>
     const request = {"experiment_id":"exp-permit-status-001","caller_business_name":"CounterSignal Research","hypothesis":"Small contractors repeatedly lose productive time calling permit offices for status.","participant_segment":"Small construction contractors who manage active permits","participant_phone":"+15555550100","authorized_research_contact":true,"questions":["How did you check the status of your most recent permit?","What part of that process took the most active time?","What workaround do you already use today?","When would a delegated status call be unacceptable?"],"decision_rule":{"target_completed_interviews":8,"support_minimum":5,"contradiction_limit":3},"region":"US","locale":"en-US"};
     const state = { confirmations:0, contradictions:0, unknowns:0 };
