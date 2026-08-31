@@ -22,33 +22,39 @@ def args(tmp_path: Path):
     )
 
 
-def successful_result():
+def successful_result(outcome: str = "contradiction"):
     return {
         "call_id": "call-live-001",
         "status": "completed",
         "task_completed": True,
         "completion_confidence": {"score": 0.96},
-        "structured_result": {"answer_class": "contradiction"},
+        "structured_result": {"answer_class": outcome},
         "decision": {
-            "outcome": "contradiction",
+            "outcome": outcome,
             "counts_toward_completed": True,
             "claim_boundary": "not product-market-fit evidence",
         },
     }
 
 
-def test_public_proof_is_minimal_and_privacy_safe():
-    proof = live_demo.public_proof(successful_result())
+@pytest.mark.parametrize("outcome", ["confirmation", "contradiction"])
+def test_public_proof_is_outcome_neutral_minimal_and_privacy_safe(outcome):
+    proof = live_demo.public_proof(successful_result(outcome))
     rendered = json.dumps(proof)
-    assert proof["classification"] == "contradiction"
+    assert proof["classification"] == outcome
+    assert proof["outcome_neutral_policy"]["publishable_counted_outcomes"] == [
+        "confirmation",
+        "contradiction",
+    ]
+    assert proof["outcome_neutral_policy"]["selected_after_result"] is False
     assert "+15555550123" not in rendered
     assert "transcript" not in rendered.lower() or proof["privacy"]["transcript_published"] is False
 
 
-def test_public_proof_rejects_non_contradiction_and_uncounted_result():
+def test_public_proof_rejects_unknown_and_uncounted_result():
     value = successful_result()
-    value["decision"]["outcome"] = "confirmation"
-    with pytest.raises(ValueError, match="contradiction"):
+    value["decision"]["outcome"] = "unknown"
+    with pytest.raises(ValueError, match="confirmation or contradiction"):
         live_demo.public_proof(value)
     value = successful_result()
     value["decision"]["counts_toward_completed"] = False
@@ -88,6 +94,14 @@ def test_live_demo_writes_public_success_or_local_failure(tmp_path, monkeypatch)
     proof = live_demo.run(args(tmp_path))
     assert proof["call_id"] == "call-live-001"
     assert json.loads((tmp_path / "proof.json").read_text())["classification"] == "contradiction"
+
+    confirmation_args = args(tmp_path / "confirmation-case")
+    monkeypatch.setattr(
+        live_demo,
+        "execute_once",
+        lambda request, execute_args: successful_result("confirmation"),
+    )
+    assert live_demo.run(confirmation_args)["classification"] == "confirmation"
 
     value = args(tmp_path / "failure-case")
     failed = successful_result()

@@ -1,4 +1,4 @@
-"""Run one consented synthetic contradiction interview and emit public-safe proof."""
+"""Run one consented synthetic interview and emit outcome-neutral public proof."""
 
 from __future__ import annotations
 
@@ -17,7 +17,8 @@ CONSENT_PHRASE = "I HAVE EXPLICIT CONSENT"
 FROZEN_PHRASE = "THE PROTOCOL IS FROZEN"
 DEFAULT_DATABASE = Path("data/consented-live-demo.sqlite3")
 DEFAULT_FAILURE_OUTPUT = Path("data/consented-live-last-result.json")
-DEFAULT_PUBLIC_OUTPUT = Path("artifacts/consented-live-contradiction.json")
+DEFAULT_PUBLIC_OUTPUT = Path("artifacts/consented-live-interview.json")
+COUNTABLE_OUTCOMES = frozenset({"confirmation", "contradiction"})
 
 
 def synthetic_request(phone: str, region: str = "US", locale: str = "en-US") -> dict[str, Any]:
@@ -54,21 +55,26 @@ def synthetic_request(phone: str, region: str = "US", locale: str = "en-US") -> 
 def public_proof(result: dict[str, Any]) -> dict[str, Any]:
     decision = result.get("decision")
     structured = result.get("structured_result")
-    if not isinstance(decision, dict) or decision.get("outcome") != "contradiction":
-        raise ValueError("public proof requires a real contradiction outcome")
+    if not isinstance(decision, dict) or decision.get("outcome") not in COUNTABLE_OUTCOMES:
+        raise ValueError("public proof requires a countable confirmation or contradiction")
     if decision.get("counts_toward_completed") is not True:
         raise ValueError("public proof requires countable consent-bound evidence")
     if not isinstance(structured, dict):
         raise ValueError("public proof requires a structured result")
+    outcome = decision["outcome"]
     return {
-        "evidence_type": "consented_live_contradiction_synthetic_experiment",
+        "evidence_type": "consented_live_interview_synthetic_experiment",
         "provider": "CALL-E",
         "call_id": result.get("call_id"),
         "status": result.get("status"),
         "task_completed": result.get("task_completed"),
         "completion_confidence": result.get("completion_confidence"),
-        "classification": "contradiction",
+        "classification": outcome,
         "decision": decision,
+        "outcome_neutral_policy": {
+            "publishable_counted_outcomes": sorted(COUNTABLE_OUTCOMES),
+            "selected_after_result": False,
+        },
         "privacy": {
             "real_phone_number_published": False,
             "participant_identity_published": False,
@@ -77,7 +83,7 @@ def public_proof(result: dict[str, Any]) -> dict[str, Any]:
         },
         "claim_boundary": (
             "Real CALL-E transport and CounterSignal evidence routing in a synthetic experiment; "
-            "one interview is not product-market-fit evidence."
+            "one completed interview is directional evidence, not product-market-fit evidence."
         ),
     }
 
@@ -134,10 +140,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         database=args.database,
     )
     result = execute_once(request, execute_args)
-    if result.get("decision", {}).get("outcome") != "contradiction":
+    if (
+        result.get("decision", {}).get("outcome") not in COUNTABLE_OUTCOMES
+        or result.get("decision", {}).get("counts_toward_completed") is not True
+    ):
         write_replace(args.failure_output, result)
         raise RuntimeError(
-            "CALL-E completed without a contradiction; inspect the local result and do not retry"
+            "CALL-E completed without countable evidence; inspect the local result and do not retry"
         )
     proof = public_proof(result)
     write_exclusive(args.public_output, proof)
@@ -149,7 +158,8 @@ def main(argv: list[str] | None = None) -> int:
         args = parse_args(argv)
         proof = run(args)
         sys.stdout.write(
-            f"Consented contradiction proof created: {args.public_output}\n"
+            f"Consented interview proof created: {args.public_output}\n"
+            f"classification={proof.get('classification')}\n"
             f"call_id={proof.get('call_id')}\n"
         )
         return 0

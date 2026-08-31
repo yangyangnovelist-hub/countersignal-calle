@@ -12,7 +12,8 @@ answers never pad the denominator.
 [Review the merged CALL-E contribution](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/198) ·
 [Inspect the zero-call preview](artifacts/example-preview.json) ·
 [Inspect the deterministic contradiction](artifacts/example-simulation.json) ·
-[Run the verification suite](TESTING.md)
+[Run the verification suite](TESTING.md) ·
+[Join the permission-first pilot](PILOT.md)
 
 ## What a judge can verify
 
@@ -78,8 +79,9 @@ allowlisting, recipient authorization confirmation, frozen-protocol confirmation
 durable idempotency reservation.
 
 The one-shot synthetic validation protocol is documented in
-[`LIVE-VALIDATION.md`](LIVE-VALIDATION.md). Failed or ambiguous outcomes stay local and are not
-blindly redialed.
+[`LIVE-VALIDATION.md`](LIVE-VALIDATION.md). Its public-proof rule is outcome-neutral: a countable
+confirmation and a countable contradiction are published under the same contract. Failed,
+ambiguous or non-response outcomes stay local and are not blindly redialed.
 
 ## Trust model and limitations
 
@@ -96,7 +98,7 @@ See [`THREAT_MODEL.md`](THREAT_MODEL.md) for the explicit failure boundaries.
 
 ## Verification status
 
-- 61 automated tests pass with 91.26% coverage.
+- 62 automated tests pass with 91.32% coverage.
 - Ruff passes with no findings.
 - CI validates HTML semantics and audits the locked runtime dependency graph for known vulnerabilities.
 - Desktop and mobile browser flows have been exercised with headless Chromium.
@@ -114,5 +116,11 @@ live-validation runner, and complete verification suite were built during the ev
 CounterSignal reuses the official CALL-E Python SDK and reliability patterns from the author's
 MIT-licensed IncidentBridge entry. The research model, schema, routing, decision mechanism, user
 experience, and evidence contract are independent. See [`THIRD_PARTY.md`](THIRD_PARTY.md).
+
+## Rebuild the judge video
+
+Run `bash scripts/build-demo.sh`. The reproducible, no-call build records the public reviewer
+surfaces, generates subtitle-timed narration, burns English captions, and writes the under-three-
+minute MP4 to `video/build/countersignal-demo.mp4`. See [`video/DEMO.md`](video/DEMO.md).
 
 MIT licensed.

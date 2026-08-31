@@ -1,0 +1,63 @@
+1
+00:00:00,000 --> 00:00:08,000
+Customer discovery should reduce uncertainty, but voice automation can scale confirmation bias just as easily as insight.
+
+2
+00:00:08,120 --> 00:00:16,000
+CounterSignal makes the interview process capable of telling its operator that the starting hypothesis is wrong.
+
+3
+00:00:16,120 --> 00:00:26,000
+Before any call, it freezes the target segment, hypothesis, five exact questions, and decision thresholds into one protocol identity.
+
+4
+00:00:26,120 --> 00:00:35,000
+This experiment needs eight answered interviews, five supporting signals, or three grounded contradictions that weaken the hypothesis.
+
+5
+00:00:35,120 --> 00:00:44,000
+The reviewer starts with eight answered interviews and five supporting signals, so the provisional rule currently supports the hypothesis.
+
+6
+00:00:44,120 --> 00:00:52,000
+Add a voicemail. The non-response is visible, but the answered denominator correctly stays at eight.
+
+7
+00:00:52,120 --> 00:01:04,000
+Now add three contradictions. Existing support remains in the ledger; negative evidence is not deleted or reinterpreted after the fact.
+
+8
+00:01:04,120 --> 00:01:14,000
+At the frozen threshold, the decision flips to hypothesis weakened. That state change is the product, not a decorative dashboard.
+
+9
+00:01:14,120 --> 00:01:24,000
+CALL-E is the interview instrument. It discloses that it is AI, requests consent, and asks the fixed questions without pitching or coaching.
+
+10
+00:01:24,120 --> 00:01:35,000
+A terminal call counts only when the participant matches the segment and the call, protocol, destination, confidence, and recipient evidence all bind.
+
+11
+00:01:35,120 --> 00:01:45,000
+The public evidence desk exposes the exact masked task, strict schema, protocol hash, and no-call preview before any side effect.
+
+12
+00:01:45,120 --> 00:01:56,000
+Refusal, voicemail, ambiguity, low confidence, malformed output, or missing corroboration remains outside the completed denominator and is never blindly redialed.
+
+13
+00:01:56,120 --> 00:02:06,000
+CALL-E maintainers reviewed this implementation in the official repository and merged pull request one ninety-eight for community reuse.
+
+14
+00:02:06,120 --> 00:02:18,000
+The repository now passes sixty-two tests above a ninety-percent coverage gate, including the published SDK create-call and polling boundary.
+
+15
+00:02:18,120 --> 00:02:28,000
+The live-proof rule is outcome neutral: a countable confirmation and a countable contradiction are publishable under the same contract.
+
+16
+00:02:28,120 --> 00:02:38,000
+One interview is directional evidence, not product-market fit. CounterSignal makes that limit explicit while making contradictions operationally unavoidable.
