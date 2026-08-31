@@ -1,18 +1,22 @@
 # CounterSignal
 
+[![CI](https://github.com/yangyangnovelist-hub/countersignal-calle/actions/workflows/ci.yml/badge.svg)](https://github.com/yangyangnovelist-hub/countersignal-calle/actions/workflows/ci.yml)
+
 **Customer discovery that is allowed to tell the founder they are wrong.** CounterSignal freezes
 the segment, hypothesis, five questions, and an 8/5/3 decision rule before CALL-E contacts one
 authorized participant. Consent-bound contradictions are load-bearing; voicemail and ambiguous
 answers never pad the denominator.
 
-[Open the published evidence console](https://yangyangnovelist-hub.github.io/countersignal-calle/) ·
+[Open the judge console](https://countersignal.vercel.app/) ·
+[Inspect the published evidence](https://yangyangnovelist-hub.github.io/countersignal-calle/) ·
+[Review the merged CALL-E contribution](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/198) ·
 [Inspect the zero-call preview](artifacts/example-preview.json) ·
 [Inspect the deterministic contradiction](artifacts/example-simulation.json) ·
 [Run the verification suite](TESTING.md)
 
 ## What a judge can verify
 
-1. Open the evidence console and click **Contradiction** three times. The frozen rule changes the
+1. Open the judge console and click **Contradiction** three times. The frozen rule changes the
    experiment from `collecting` to `hypothesis_weakened`; no phone call is created.
 2. Inspect `artifacts/example-preview.json`: the exact CALL-E task, strict output schema, masked
    destination, protocol hash, and idempotency key are visible before dispatch.
@@ -94,8 +98,11 @@ See [`THREAT_MODEL.md`](THREAT_MODEL.md) for the explicit failure boundaries.
 
 - 61 automated tests pass with 91.26% coverage.
 - Ruff passes with no findings.
+- CI validates HTML semantics and audits the locked runtime dependency graph for known vulnerabilities.
 - Desktop and mobile browser flows have been exercised with headless Chromium.
 - The published CALL-E SDK is invoked at runtime in the HTTP integration test.
+- The implementation is merged into CALL-E's official phone-agent repository through
+  [PR #198](https://github.com/CALLE-AI/awesome-phone-call-agents/pull/198).
 - A public real-provider result is not claimed until the consented live protocol succeeds.
 
 ## What was built during the event
