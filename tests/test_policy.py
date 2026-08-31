@@ -18,17 +18,24 @@ from countersignal.policy import (
 )
 
 RAW = {
-    "experiment_id": "exp-permit-status-001",
+    "experiment_id": "smallbet-permit-ops-v1",
     "caller_business_name": "CounterSignal Research",
-    "hypothesis": "Small contractors repeatedly lose time calling permit offices for status.",
-    "participant_segment": "Small contractors who manage active municipal permits",
+    "hypothesis": (
+        "Permit-status ambiguity recurs often enough that contractors already spend operator time "
+        "on a manual workaround."
+    ),
+    "participant_segment": (
+        "Small and midsize US commercial contractors that directly manage municipal permits"
+    ),
     "participant_phone": "+15555550123",
     "authorized_research_contact": True,
     "questions": [
-        "How did you check the status of your most recent permit?",
-        "What part of that process took the most active time?",
-        "What workaround do you already use today?",
-        "When would a delegated status call be unacceptable?",
+        "Tell me about the last time a permit status was unclear or did not match what your team "
+        "expected.",
+        "What did your team do to resolve it?",
+        "Roughly how often has that kind of follow-up happened in the last month?",
+        "What happens operationally if nobody follows up?",
+        "Who or what currently keeps track of those exceptions?",
     ],
     "decision_rule": {
         "target_completed_interviews": 8,
@@ -68,7 +75,7 @@ def provider(request, scenario="contradiction"):
 
 def test_request_freezes_protocol_and_masks_phone():
     request = parse_request(RAW)
-    assert request.questions[2].startswith("What workaround")
+    assert request.questions[2].startswith("Roughly how often")
     assert request.decision_rule.contradiction_limit == 3
     assert request.public_dict()["participant_phone"] == "+15******123"
     assert mask_phone(request.participant_phone) == "+15******123"
@@ -96,11 +103,11 @@ def test_request_rejects_unsafe_or_malformed_fields(field, value, message):
 
 def test_request_rejects_mutable_or_invalid_question_protocol():
     raw = copy.deepcopy(RAW)
-    raw["questions"] = raw["questions"][:3]
-    with pytest.raises(ValueError, match="exactly four"):
+    raw["questions"] = raw["questions"][:4]
+    with pytest.raises(ValueError, match="exactly five"):
         parse_request(raw)
     raw = copy.deepcopy(RAW)
-    raw["questions"][3] = raw["questions"][0]
+    raw["questions"][4] = raw["questions"][0]
     with pytest.raises(ValueError, match="unique"):
         parse_request(raw)
     raw = copy.deepcopy(RAW)

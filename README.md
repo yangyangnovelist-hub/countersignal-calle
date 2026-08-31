@@ -1,7 +1,7 @@
 # CounterSignal
 
 **Customer discovery that is allowed to tell the founder they are wrong.** CounterSignal freezes
-the segment, hypothesis, four questions, and an 8/5/3 decision rule before CALL-E contacts one
+the segment, hypothesis, five questions, and an 8/5/3 decision rule before CALL-E contacts one
 authorized participant. Consent-bound contradictions are load-bearing; voicemail and ambiguous
 answers never pad the denominator.
 
@@ -25,7 +25,7 @@ answers never pad the denominator.
 ## Decisive proof sequence
 
 ```text
-freeze segment + hypothesis + four questions + 8/5/3 rule
+freeze segment + hypothesis + five questions + 8/5/3 rule
   → authorize one participant and exact destination
   → CALL-E discloses AI and asks the frozen questions without pitching
   → strict structured result + recipient-side evidence
@@ -80,7 +80,7 @@ blindly redialed.
 ## Trust model and limitations
 
 - The task discloses that the caller is AI and ends before research questions if consent is absent.
-- The four questions are sent verbatim; the task prohibits pitching, coaching, leading follow-ups,
+- The five questions are sent verbatim; the task prohibits pitching, coaching, leading follow-ups,
   names, contact details, credentials, payment data, and contract terms.
 - A confirmation or contradiction counts only when the terminal result, call ID, experiment,
   protocol hash, exact destination, evidence list, and recipient quote corroborate.

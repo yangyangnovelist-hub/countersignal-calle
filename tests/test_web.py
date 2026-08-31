@@ -41,6 +41,9 @@ def test_operator_surface_and_capabilities(tmp_path):
         status, headers, body = fetch(base + "/")
         assert status == 200
         assert "Try to kill the hypothesis" in body
+        assert "__STATIC_PREVIEW__" not in body
+        assert "protocol_hash" in body
+        assert "call_arguments" in body
         assert headers["Content-Security-Policy"]
         status, _, body = fetch(base + "/api/capabilities")
         assert status == 200

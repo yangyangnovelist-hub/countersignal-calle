@@ -22,19 +22,24 @@ DEFAULT_PUBLIC_OUTPUT = Path("artifacts/consented-live-contradiction.json")
 
 def synthetic_request(phone: str, region: str = "US", locale: str = "en-US") -> dict[str, Any]:
     return {
-        "experiment_id": "exp-permit-status-001",
+        "experiment_id": "smallbet-permit-ops-v1",
         "caller_business_name": "CounterSignal Research",
         "hypothesis": (
-            "Small contractors repeatedly lose productive time calling permit offices for status."
+            "Permit-status ambiguity recurs often enough that contractors already spend operator "
+            "time on a manual workaround."
         ),
-        "participant_segment": "Small construction contractors who manage active permits",
+        "participant_segment": (
+            "Small and midsize US commercial contractors that directly manage municipal permits"
+        ),
         "participant_phone": phone,
         "authorized_research_contact": True,
         "questions": [
-            "How did you check the status of your most recent permit?",
-            "What part of that process took the most active time?",
-            "What workaround do you already use today?",
-            "When would a delegated status call be unacceptable?",
+            "Tell me about the last time a permit status was unclear or did not match what your "
+            "team expected.",
+            "What did your team do to resolve it?",
+            "Roughly how often has that kind of follow-up happened in the last month?",
+            "What happens operationally if nobody follows up?",
+            "Who or what currently keeps track of those exceptions?",
         ],
         "decision_rule": {
             "target_completed_interviews": 8,

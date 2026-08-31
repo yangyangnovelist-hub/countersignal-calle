@@ -102,6 +102,7 @@
   <dialog id="details"><button type="button" class="close" id="close">Close</button><div class="label">Inspectable output</div><pre id="json"></pre></dialog>
   <script>
     const request = __EXAMPLE__;
+    const staticPreview = __STATIC_PREVIEW__;
     const state = { confirmations:0, contradictions:0, unknowns:0 };
     const $ = (id) => document.getElementById(id);
     $('experiment-id').textContent = request.experiment_id;
@@ -111,7 +112,7 @@
     function outcomeDecision(){ const completed=state.confirmations+state.contradictions; if(state.contradictions>=3)return 'hypothesis_weakened'; if(completed<8)return 'collecting'; if(state.confirmations>=5)return 'hypothesis_supported_under_rule'; return 'inconclusive'; }
     function render(){ $('confirmations').textContent=state.confirmations; $('contradictions').textContent=state.contradictions; $('unknowns').textContent=state.unknowns; $('completed').textContent=state.confirmations+state.contradictions; $('decision').textContent=outcomeDecision(); }
     function staticResponse(path, body){
-      if(path==='/api/preview') return { mode:'preview', creates_phone_call:false, frozen_protocol:{ experiment_id:request.experiment_id, hypothesis:request.hypothesis, participant_segment:request.participant_segment, questions:request.questions, decision_rule:request.decision_rule }, decision_authority:'The frozen 8/5/3 rule; classifications remain reviewable.', evidence_note:'Published deterministic evidence console. Run the repository for the CALL-E SDK path.' };
+      if(path==='/api/preview') return staticPreview;
       const evidence={ confirmation:'We lose hours calling the permit office every week', contradiction:'Our expeditor already handles every permit status call', ambiguous:'It depends on the project', voicemail:'' };
       const scenario=body.scenario; const outcome=['confirmation','contradiction'].includes(scenario)?scenario:'unknown';
       return { mode:'simulate', creates_phone_call:false, scenario, structured_result:{ answer_class:scenario==='voicemail'?'no_response':scenario, verbatim_evidence:evidence[scenario] }, decision:{ outcome, counts_toward_completed:outcome!=='unknown', reason:outcome==='unknown'?'The interview did not produce classifiable evidence.':'Consent-bound recipient evidence supports the provisional classification.' } };

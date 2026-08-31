@@ -1,15 +1,16 @@
 {
-  "experiment_id": "exp-permit-status-001",
+  "experiment_id": "smallbet-permit-ops-v1",
   "caller_business_name": "CounterSignal Research",
-  "hypothesis": "Small contractors repeatedly lose productive time calling permit offices for status.",
-  "participant_segment": "Small construction contractors who manage active permits",
+  "hypothesis": "Permit-status ambiguity recurs often enough that contractors already spend operator time on a manual workaround.",
+  "participant_segment": "Small and midsize US commercial contractors that directly manage municipal permits",
   "participant_phone": "+15555550100",
   "authorized_research_contact": true,
   "questions": [
-    "How did you check the status of your most recent permit?",
-    "What part of that process took the most active time?",
-    "What workaround do you already use today?",
-    "When would a delegated status call be unacceptable?"
+    "Tell me about the last time a permit status was unclear or did not match what your team expected.",
+    "What did your team do to resolve it?",
+    "Roughly how often has that kind of follow-up happened in the last month?",
+    "What happens operationally if nobody follows up?",
+    "Who or what currently keeps track of those exceptions?"
   ],
   "decision_rule": {
     "target_completed_interviews": 8,

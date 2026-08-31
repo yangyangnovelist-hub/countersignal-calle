@@ -28,8 +28,10 @@ EXAMPLE_REQUEST = synthetic_request("+15555550100")
 
 
 def operator_html() -> str:
-    return HTML_PATH.read_text(encoding="utf-8").replace(
-        "__EXAMPLE__", json.dumps(EXAMPLE_REQUEST)
+    template = HTML_PATH.read_text(encoding="utf-8")
+    example = parse_request(EXAMPLE_REQUEST)
+    return template.replace("__EXAMPLE__", json.dumps(EXAMPLE_REQUEST)).replace(
+        "__STATIC_PREVIEW__", json.dumps(preview(example))
     )
 
 

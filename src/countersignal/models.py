@@ -97,8 +97,8 @@ def parse_request(raw: Any) -> ExperimentRequest:
         raise ValueError("authorized_research_contact must be true")
 
     questions = raw.get("questions")
-    if not isinstance(questions, list) or len(questions) != 4:
-        raise ValueError("questions must contain exactly four pre-registered questions")
+    if not isinstance(questions, list) or len(questions) != 5:
+        raise ValueError("questions must contain exactly five pre-registered questions")
     cleaned_questions = tuple(
         clean_spoken_text(value, f"questions[{index}]", 8, 180)
         for index, value in enumerate(questions)
