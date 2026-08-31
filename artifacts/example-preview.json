@@ -1,0 +1,96 @@
+{
+  "mode": "preview",
+  "creates_phone_call": false,
+  "frozen_protocol": {
+    "experiment_id": "exp-permit-status-001",
+    "caller_business_name": "CounterSignal Research",
+    "hypothesis": "Small contractors repeatedly lose productive time calling permit offices for status.",
+    "participant_segment": "Small construction contractors who manage active permits",
+    "questions": [
+      "How did you check the status of your most recent permit?",
+      "What part of that process took the most active time?",
+      "What workaround do you already use today?",
+      "When would a delegated status call be unacceptable?"
+    ],
+    "decision_rule": {
+      "target_completed_interviews": 8,
+      "support_minimum": 5,
+      "contradiction_limit": 3
+    }
+  },
+  "protocol_hash": "6329e0d8cb697eae365840ce14c08df447f392047e4178c2b68786243c299cca",
+  "idempotency_key": "countersignal-6e3cf39be7c3d552d3859a28f7878abb7398416e3afb94e6af016a13a2dd530f",
+  "call_arguments": {
+    "task": "Call one authorized research participant on behalf of CounterSignal Research. Speak in locale en-US. Identify yourself as an AI research assistant and ask for consent to a short customer-discovery interview. Do not disclose the hypothesis, pitch, persuade, coach, sell, collect names, or request credentials, payment data, or personal contact details. If consent is not clearly yes, end the call without asking the research questions. First confirm the participant matches this segment: Small construction contractors who manage active permits. Then ask these exact pre-registered questions in order, without adding leading follow-ups: Question 1: How did you check the status of your most recent permit? Question 2: What part of that process took the most active time? Question 3: What workaround do you already use today? Question 4: When would a delegated status call be unacceptable? Classify the evidence as confirmation only when the participant describes the hypothesized pain from their own experience; classify it as contradiction when their experience rejects the pain or already solves it; otherwise use ambiguous or no_response. Capture one short verbatim participant quote. The frozen hypothesis is: Small contractors repeatedly lose productive time calling permit offices for status. Do not claim product-market fit or change the frozen decision rule.",
+    "recipients": [
+      {
+        "phones": [
+          "+15******100"
+        ],
+        "region": "US",
+        "locale": "en-US"
+      }
+    ],
+    "result_schema": {
+      "type": "object",
+      "required": [
+        "consented_after_ai_disclosure",
+        "participant_matches_segment",
+        "answer_class",
+        "verbatim_evidence",
+        "reason_summary",
+        "willing_to_follow_up"
+      ],
+      "properties": {
+        "consented_after_ai_disclosure": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "participant_matches_segment": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "answer_class": {
+          "type": "string",
+          "enum": [
+            "confirmation",
+            "contradiction",
+            "ambiguous",
+            "no_response"
+          ]
+        },
+        "verbatim_evidence": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "reason_summary": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "willing_to_follow_up": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "workflow_type": "frozen_customer_discovery",
+      "experiment_id": "exp-permit-status-001",
+      "protocol_hash": "6329e0d8cb697eae365840ce14c08df447f392047e4178c2b68786243c299cca"
+    }
+  },
+  "decision_authority": "The frozen 8/5/3 rule; classifications remain reviewable."
+}

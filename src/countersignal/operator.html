@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CounterSignal — Frozen customer discovery</title>
+  <style>
+    :root { --paper:#f2efe7; --ink:#181916; --muted:#6d6b62; --rule:#c8c2b6; --acid:#d9ff51; --red:#e4492f; --green:#1f6c4a; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"Avenir Next","Helvetica Neue",sans-serif; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.2; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E"); }
+    button,input { font:inherit; }
+    .shell { width:min(1440px,calc(100% - 36px)); margin:0 auto; padding:28px 0 54px; }
+    header { display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--ink); padding-bottom:13px; }
+    .brand { font-weight:900; letter-spacing:-.04em; text-transform:uppercase; }
+    .brand span { display:inline-block; width:10px; height:10px; background:var(--red); border-radius:50%; margin-right:8px; }
+    .mode { font:700 11px/1.2 ui-monospace,SFMono-Regular,monospace; letter-spacing:.12em; text-transform:uppercase; }
+    .mode::before { content:""; display:inline-block; width:7px; height:7px; background:var(--green); border-radius:50%; margin-right:7px; }
+    .hero { display:grid; grid-template-columns:1.5fr .7fr; gap:44px; padding:54px 0 38px; }
+    h1 { margin:0; max-width:850px; font:400 clamp(58px,8vw,126px)/.82 "Iowan Old Style",Baskerville,Georgia,serif; letter-spacing:-.065em; }
+    .lede { max-width:600px; margin:24px 0 0; font-size:18px; line-height:1.45; }
+    .stamp { align-self:end; border:2px solid var(--ink); padding:18px; transform:rotate(2deg); box-shadow:8px 8px 0 var(--acid); }
+    .stamp small { display:block; font:700 10px/1.2 ui-monospace,monospace; letter-spacing:.13em; text-transform:uppercase; }
+    .stamp strong { display:block; margin-top:8px; font:400 29px/1 "Iowan Old Style",Georgia,serif; }
+    .grid { display:grid; grid-template-columns:1.45fr .75fr; gap:18px; }
+    .card { border:1px solid var(--ink); background:rgba(255,255,255,.22); padding:24px; position:relative; }
+    .label { font:800 10px/1.2 ui-monospace,SFMono-Regular,monospace; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); }
+    h2 { font:400 31px/1.1 "Iowan Old Style",Georgia,serif; margin:10px 0 20px; }
+    .hypothesis { font-size:20px; line-height:1.45; max-width:760px; }
+    .segment { display:inline-block; margin-top:16px; padding:6px 10px; background:var(--ink); color:var(--paper); font-size:12px; }
+    ol { margin:20px 0 0; padding:0; counter-reset:q; }
+    li { list-style:none; counter-increment:q; display:grid; grid-template-columns:34px 1fr; gap:10px; padding:12px 0; border-top:1px solid var(--rule); line-height:1.35; }
+    li::before { content:"0" counter(q); font:700 11px/1.5 ui-monospace,monospace; color:var(--red); }
+    .rule-strip { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--ink); margin-bottom:18px; }
+    .rule { padding:17px 14px; border-right:1px solid var(--ink); }
+    .rule:last-child { border-right:0; }
+    .rule strong { display:block; font:400 42px/1 "Iowan Old Style",Georgia,serif; }
+    .rule span { font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+    .decision { background:var(--ink); color:var(--paper); padding:22px; min-height:132px; }
+    .decision .label { color:#aaa89f; }
+    .decision strong { display:block; margin-top:18px; color:var(--acid); font:400 25px/1.05 "Iowan Old Style",Georgia,serif; }
+    .controls { margin-top:18px; }
+    .actions { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+    button { border:1px solid var(--ink); background:transparent; color:var(--ink); padding:12px 10px; cursor:pointer; font-weight:750; transition:.15s ease; }
+    button:hover,button:focus-visible { background:var(--acid); transform:translate(-2px,-2px); box-shadow:3px 3px 0 var(--ink); outline:none; }
+    button.primary { grid-column:1/-1; background:var(--ink); color:var(--paper); }
+    button.primary:hover { color:var(--ink); background:var(--acid); }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--ink); border:1px solid var(--ink); margin-top:18px; }
+    .metric { background:var(--paper); padding:15px; }
+    .metric strong { display:block; font:400 26px/1 "Iowan Old Style",Georgia,serif; }
+    .metric span { font-size:10px; color:var(--muted); text-transform:uppercase; }
+    .evidence { margin-top:18px; border-top:1px solid var(--ink); padding-top:18px; }
+    .quote { font:400 24px/1.3 "Iowan Old Style",Georgia,serif; margin:12px 0; }
+    .route { display:inline-flex; gap:8px; align-items:center; font:700 11px/1 ui-monospace,monospace; text-transform:uppercase; }
+    .route::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--muted); }
+    .route.confirmation::before { background:var(--green); }
+    .route.contradiction::before { background:var(--red); }
+    .footnote { grid-column:1/-1; padding:16px 0 0; font-size:12px; color:var(--muted); }
+    dialog { width:min(720px,calc(100% - 30px)); border:1px solid var(--ink); background:var(--paper); padding:26px; box-shadow:12px 12px 0 var(--ink); }
+    dialog::backdrop { background:rgba(24,25,22,.58); }
+    pre { white-space:pre-wrap; max-height:55vh; overflow:auto; font:11px/1.5 ui-monospace,SFMono-Regular,monospace; }
+    .close { float:right; padding:7px 12px; }
+    @media (max-width:900px) { .hero,.grid { grid-template-columns:1fr; } .hero { gap:28px; } .stamp { justify-self:start; } h1 { font-size:64px; } }
+    @media (max-width:560px) { .shell { width:min(100% - 22px,1440px); } .metrics { grid-template-columns:repeat(2,1fr); } .rule strong { font-size:34px; } .hero { padding-top:35px; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header><div class="brand"><span></span>CounterSignal</div><div class="mode" id="mode">Deterministic evidence mode · no call</div></header>
+    <section class="hero">
+      <div><h1>Try to kill the hypothesis.</h1><p class="lede">Customer discovery that can scale confirmation bias is worse than no research. Freeze the segment, questions, and decision rule first—then let contradictions count.</p></div>
+      <aside class="stamp"><small>Pre-registered experiment</small><strong>Protocol frozen</strong></aside>
+    </section>
+    <section class="grid">
+      <article class="card">
+        <div class="label">Frozen hypothesis</div><h2 id="experiment-id"></h2><div class="hypothesis" id="hypothesis"></div><span class="segment" id="segment"></span>
+        <ol id="questions"></ol>
+      </article>
+      <aside>
+        <div class="rule-strip"><div class="rule"><strong>8</strong><span>completed</span></div><div class="rule"><strong>5</strong><span>support</span></div><div class="rule"><strong>3</strong><span>contradict</span></div></div>
+        <div class="decision"><div class="label">Current decision</div><strong id="decision">collecting</strong></div>
+        <div class="card controls">
+          <div class="label">Evidence routes</div><h2>Run one bounded outcome</h2>
+          <div class="actions">
+            <button data-scenario="confirmation">Confirmation</button><button data-scenario="contradiction">Contradiction</button>
+            <button data-scenario="ambiguous">Ambiguous</button><button data-scenario="voicemail">Voicemail</button>
+            <button class="primary" id="preview">Inspect frozen CALL‑E task</button>
+          </div>
+        </div>
+      </aside>
+      <section class="card">
+        <div class="label">Accepted evidence ledger</div>
+        <div class="metrics"><div class="metric"><strong id="completed">0</strong><span>completed</span></div><div class="metric"><strong id="confirmations">0</strong><span>confirm</span></div><div class="metric"><strong id="contradictions">0</strong><span>contradict</span></div><div class="metric"><strong id="unknowns">0</strong><span>unknown</span></div></div>
+        <div class="evidence"><div class="route" id="route">No outcome yet</div><div class="quote" id="quote">“Evidence appears here only when it is bound to consent and recipient transcript.”</div><div class="label" id="reason">Unknowns never pad the denominator.</div></div>
+      </section>
+      <section class="card">
+        <div class="label">CALL‑E boundary</div><h2>Interview, not pitch.</h2><p>AI disclosure and consent come first. Questions cannot change after dispatch. No selling, coaching, personal contact collection, or product-market-fit claim.</p><p class="footnote">Live execution is server-disabled by default and additionally requires an exact destination allowlist, authorization, a frozen-protocol confirmation, and a durable idempotency reservation.</p>
+      </section>
+      <p class="footnote">CounterSignal returns an operational experiment decision. It does not estimate a population or certify product-market fit.</p>
+    </section>
+  </main>
+  <dialog id="details"><button class="close" id="close">Close</button><div class="label">Inspectable output</div><pre id="json"></pre></dialog>
+  <script>
+    const request = __EXAMPLE__;
+    const state = { confirmations:0, contradictions:0, unknowns:0 };
+    const $ = (id) => document.getElementById(id);
+    $('experiment-id').textContent = request.experiment_id;
+    $('hypothesis').textContent = request.hypothesis;
+    $('segment').textContent = request.participant_segment;
+    request.questions.forEach(q => { const li=document.createElement('li'); li.textContent=q; $('questions').appendChild(li); });
+    function outcomeDecision(){ const completed=state.confirmations+state.contradictions; if(state.contradictions>=3)return 'hypothesis_weakened'; if(completed<8)return 'collecting'; if(state.confirmations>=5)return 'hypothesis_supported_under_rule'; return 'inconclusive'; }
+    function render(){ $('confirmations').textContent=state.confirmations; $('contradictions').textContent=state.contradictions; $('unknowns').textContent=state.unknowns; $('completed').textContent=state.confirmations+state.contradictions; $('decision').textContent=outcomeDecision(); }
+    function staticResponse(path, body){
+      if(path==='/api/preview') return { mode:'preview', creates_phone_call:false, frozen_protocol:{ experiment_id:request.experiment_id, hypothesis:request.hypothesis, participant_segment:request.participant_segment, questions:request.questions, decision_rule:request.decision_rule }, decision_authority:'The frozen 8/5/3 rule; classifications remain reviewable.', evidence_note:'Published deterministic evidence console. Run the repository for the CALL-E SDK path.' };
+      const evidence={ confirmation:'We lose hours calling the permit office every week', contradiction:'Our expeditor already handles every permit status call', ambiguous:'It depends on the project', voicemail:'' };
+      const scenario=body.scenario; const outcome=['confirmation','contradiction'].includes(scenario)?scenario:'unknown';
+      return { mode:'simulate', creates_phone_call:false, scenario, structured_result:{ answer_class:scenario==='voicemail'?'no_response':scenario, verbatim_evidence:evidence[scenario] }, decision:{ outcome, counts_toward_completed:outcome!=='unknown', reason:outcome==='unknown'?'The interview did not produce classifiable evidence.':'Consent-bound recipient evidence supports the provisional classification.' } };
+    }
+    async function post(path, body){ if(!['127.0.0.1','localhost'].includes(location.hostname)) return staticResponse(path,body); const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const data=await response.json(); if(!response.ok)throw new Error(data.error||'Request failed'); return data; }
+    function show(data){ $('json').textContent=JSON.stringify(data,null,2); $('details').showModal(); }
+    document.querySelectorAll('[data-scenario]').forEach(button=>button.addEventListener('click',async()=>{ try { const data=await post('/api/simulate',{request,scenario:button.dataset.scenario}); const outcome=data.decision.outcome; if(outcome==='confirmation')state.confirmations++; else if(outcome==='contradiction')state.contradictions++; else state.unknowns++; $('route').className='route '+outcome; $('route').textContent=outcome; $('quote').textContent=data.structured_result.verbatim_evidence ? '“'+data.structured_result.verbatim_evidence+'”' : 'No recipient evidence accepted.'; $('reason').textContent=data.decision.reason; render(); } catch(error){ $('reason').textContent=error.message; } }));
+    $('preview').addEventListener('click',async()=>{ try{ show(await post('/api/preview',{request})); }catch(error){ $('reason').textContent=error.message; } });
+    $('close').addEventListener('click',()=>$('details').close());
+    fetch('/api/capabilities').then(r=>r.json()).then(c=>{ if(c.live_ui_enabled&&c.live_environment_ready)$('mode').textContent='Live mode armed · exact allowlist'; }).catch(()=>{});
+    render();
+  </script>
+</body>
+</html>

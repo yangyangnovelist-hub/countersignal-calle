@@ -1,0 +1,21 @@
+{
+  "experiment_id": "exp-permit-status-001",
+  "caller_business_name": "CounterSignal Research",
+  "hypothesis": "Small contractors repeatedly lose productive time calling permit offices for status.",
+  "participant_segment": "Small construction contractors who manage active permits",
+  "participant_phone": "+15555550100",
+  "authorized_research_contact": true,
+  "questions": [
+    "How did you check the status of your most recent permit?",
+    "What part of that process took the most active time?",
+    "What workaround do you already use today?",
+    "When would a delegated status call be unacceptable?"
+  ],
+  "decision_rule": {
+    "target_completed_interviews": 8,
+    "support_minimum": 5,
+    "contradiction_limit": 3
+  },
+  "region": "US",
+  "locale": "en-US"
+}

@@ -1,0 +1,19 @@
+{
+  "mode": "simulate",
+  "creates_phone_call": false,
+  "scenario": "contradiction",
+  "structured_result": {
+    "consented_after_ai_disclosure": "yes",
+    "participant_matches_segment": "yes",
+    "answer_class": "contradiction",
+    "verbatim_evidence": "Our expeditor already handles every permit status call",
+    "reason_summary": "The participant already has a satisfactory workaround.",
+    "willing_to_follow_up": "no"
+  },
+  "decision": {
+    "outcome": "contradiction",
+    "counts_toward_completed": true,
+    "reason": "Consent-bound recipient evidence supports the provisional classification.",
+    "claim_boundary": "Operational research signal, not product-market-fit evidence."
+  }
+}
