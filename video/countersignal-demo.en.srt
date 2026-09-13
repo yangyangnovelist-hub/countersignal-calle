@@ -52,7 +52,7 @@ CALL-E maintainers reviewed this implementation in the official repository and m
 
 14
 00:02:06,120 --> 00:02:18,000
-The repository now passes sixty-two tests above a ninety-percent coverage gate, including the published SDK create-call and polling boundary.
+The repository now passes ninety-two tests above a ninety-percent coverage gate, including the published SDK create-call and polling boundary.
 
 15
 00:02:18,120 --> 00:02:28,000

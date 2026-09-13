@@ -238,3 +238,33 @@ def test_valid_result_rejects_extra_fields_invalid_enums_and_empty_quote():
     assert not valid_result(invalid)
     invalid = {**value, "verbatim_evidence": ""}
     assert not valid_result(invalid)
+
+
+@pytest.mark.parametrize("wrapped", [False, True], ids=["scalar", "score-object"])
+@pytest.mark.parametrize(
+    ("score", "accepted"),
+    [
+        pytest.param(float("nan"), False, id="nan"),
+        pytest.param(float("inf"), False, id="positive-infinity"),
+        pytest.param(float("-inf"), False, id="negative-infinity"),
+        pytest.param(1.01, False, id="above-probability-range"),
+        pytest.param(-0.01, False, id="below-probability-range"),
+        pytest.param(10**400, False, id="integer-overflow"),
+        pytest.param(True, False, id="boolean"),
+        pytest.param("0.95", False, id="numeric-string"),
+        pytest.param(None, False, id="missing-score"),
+        pytest.param({"score": None}, False, id="nested-missing-score"),
+        pytest.param(0, False, id="zero"),
+        pytest.param(0.799999, False, id="below-threshold"),
+        pytest.param(0.8, True, id="at-threshold"),
+        pytest.param(0.95, True, id="normal-confidence"),
+        pytest.param(1, True, id="one"),
+    ],
+)
+def test_provider_confidence_must_be_a_bounded_probability(score, accepted, wrapped):
+    request = parse_request(RAW)
+    response = provider(request)
+    response["completion_confidence"] = {"score": score, "label": "high"} if wrapped else score
+    decision = route_result(request, response, expected_call_id=response["id"])
+    assert decision["outcome"] == ("contradiction" if accepted else "unknown")
+    assert decision["counts_toward_completed"] is accepted

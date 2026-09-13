@@ -98,7 +98,7 @@ See [`THREAT_MODEL.md`](THREAT_MODEL.md) for the explicit failure boundaries.
 
 ## Verification status
 
-- 62 automated tests pass with 91.32% coverage.
+- 92 automated tests pass with 91.75% coverage.
 - Ruff passes with no findings.
 - CI validates HTML semantics and audits the locked runtime dependency graph for known vulnerabilities.
 - Desktop and mobile browser flows have been exercised with headless Chromium.
